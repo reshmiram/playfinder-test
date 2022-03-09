@@ -1,4 +1,4 @@
-@import '../../styles/variables.scss';
+@import "../../styles/variables.scss";
 
 .search {
     width: 1220px;
@@ -19,5 +19,4 @@
     @media only screen and (max-width: 920px) {
         width: 90%;
     }
-
 }

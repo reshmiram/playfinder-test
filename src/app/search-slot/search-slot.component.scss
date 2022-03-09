@@ -1,4 +1,51 @@
+@import "../../styles/variables.scss";
+
 app-my-counter {
     position: absolute;
     top: 100px;
+}
+
+.search-slot {
+    padding-top: 50px;
+    padding-bottom: 50px;
+    position: sticky;
+    top: 80px;
+    border-bottom: 1px solid $brand_light;
+    background-color: #fff;
+    z-index: 1;
+
+    .tab-content {
+        margin: 0px 50px;
+        padding: 20px !important;
+        background-color: hsl(0deg 0% 96%);
+        p{
+            &.red {
+                background-color: $red;
+            }
+    
+            &.orange {
+                background-color: $orange;
+            }
+    
+            &.green {
+                background-color: $green_light;
+            }
+        }
+        .book-slot {
+            background-color: $green;
+        }
+        .tab-details {
+            padding-left: 10px;
+            padding-top: 10px;
+        }
+        .date {
+            text-align: left;
+            max-width: fit-content;
+            font-size: 17px;
+        }
+        .item {
+            max-width: fit-content;
+        }
+
+    }
 }

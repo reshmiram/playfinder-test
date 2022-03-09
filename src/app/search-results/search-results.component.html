@@ -4,7 +4,6 @@
     </div>
 
     <div *ngIf="results">
-
         <ul class="titles">
             <li>
                 <span class="item">Slot id</span>
@@ -19,8 +18,18 @@
         <ul>
             <li
                 class="main"
-                *ngFor="let result of results.data | paginate: { itemsPerPage: 10, currentPage: p }"
-                [ngClass]="{ red: result.attributes.availabilities === 0, orange: result.attributes.availabilities > 0 && result.attributes.availabilities <= 3, green: result.attributes.availabilities >= 4 }"
+                *ngFor="
+                    let result of results
+                        | paginate: { itemsPerPage: 10, currentPage: p }
+                "
+                [ngClass]="{
+                    red: result.attributes.availabilities === 0,
+                    orange:
+                        result.attributes.availabilities > 0 &&
+                        result.attributes.availabilities <= 3,
+                    green: result.attributes.availabilities >= 4
+                }"
+                (click)="selectSlot(result)"
                 [routerLink]="['/', result.id]"
             >
                 <span class="item">{{ result.id }}</span>

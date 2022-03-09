@@ -1,4 +1,4 @@
-import {NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
+import { NgbDateStruct } from "@ng-bootstrap/ng-bootstrap";
 
 export class ApiParams {
     pitch_id: number;
@@ -12,30 +12,30 @@ export class FormInputs {
     end_date_object: NgbDateStruct;
 }
 
-export class Result {
-    meta: ResultMeta;
-    data: ResultData[];
+export class ISlots {
+    meta: ISlotsMeta;
+    data: ISlot[];
 }
 
-export class ResultMeta {
+export class ISlotsMeta {
     total_items: number;
-    filter: ResultMetaFilter;
+    filter: ISlotsMetaFilter;
 }
 
-export class ResultMetaFilter {
+export class ISlotsMetaFilter {
     starts: string;
     ends: string;
     fromTime: string;
     toTime: string;
 }
 
-export class ResultData {
+export class ISlot {
     type: string;
     id: string;
-    attributes: ResultDataAttributes;
+    attributes: ISlotAttributes;
 }
 
-export class ResultDataAttributes {
+export class ISlotAttributes {
     starts: string;
     ends: string;
     price: string;

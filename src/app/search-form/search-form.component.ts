@@ -1,16 +1,19 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { Router, ActivatedRoute } from '@angular/router';
-import * as moment from 'moment';
-import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
+import { Component, OnInit } from "@angular/core";
+import { FormBuilder, Validators } from "@angular/forms";
+import { Router, ActivatedRoute } from "@angular/router";
+import * as moment from "moment";
+import { NgbDateStruct } from "@ng-bootstrap/ng-bootstrap";
 
-import SearchService from '../services/search.service';
-import { FormInputs, ApiParams, ResultData } from '../models/search.model';
+import SearchService from "../services/search.service";
+import { FormInputs, ApiParams, ISlot } from "../models/search.model";
+import { Store } from "@ngrx/store";
+
+import * as fromSlots from '../store';
 
 @Component({
-    selector: 'app-search-form',
-    templateUrl: './search-form.component.html',
-    styleUrls: ['./search-form.component.scss'],
+    selector: "app-search-form",
+    templateUrl: "./search-form.component.html",
+    styleUrls: ["./search-form.component.scss"],
 })
 export class SearchFormComponent implements OnInit {
     constructor(
@@ -18,7 +21,7 @@ export class SearchFormComponent implements OnInit {
         public searchService: SearchService,
         public router: Router,
         public route: ActivatedRoute,
-        // private store: Store<{ slots: ResultData[] }>
+        private store: Store<{ slots: ISlot[] }>
     ) {}
 
     public pitch_id: number;
@@ -49,9 +52,15 @@ export class SearchFormComponent implements OnInit {
     }
 
     public setParamsFromUrl(): void {
-        this.pitch_id = this.route.snapshot.params.pitch_id ? parseInt(this.route.snapshot.params.pitch_id) : null;
-        this.start_date = this.route.snapshot.params.start_date ? this.route.snapshot.params.start_date : null;
-        this.end_date = this.route.snapshot.params.end_date ? this.route.snapshot.params.end_date : null;
+        this.pitch_id = this.route.snapshot.params.pitch_id
+            ? parseInt(this.route.snapshot.params.pitch_id)
+            : null;
+        this.start_date = this.route.snapshot.params.start_date
+            ? this.route.snapshot.params.start_date
+            : null;
+        this.end_date = this.route.snapshot.params.end_date
+            ? this.route.snapshot.params.end_date
+            : null;
     }
 
     public populateFromUrl(): void {
@@ -93,19 +102,21 @@ export class SearchFormComponent implements OnInit {
     public createDateString(date: NgbDateStruct): string {
         const dateString =
             date.year.toString() +
-            '-' +
+            "-" +
             date.month.toString() +
-            '-' +
+            "-" +
             date.day.toString();
-        const formattedDate = moment(dateString, 'YYYY-M-D').format('YYYY-MM-DD');
+        const formattedDate = moment(dateString, "YYYY-M-D").format(
+            "YYYY-MM-DD"
+        );
         return formattedDate;
     }
 
     public createDateObject(dateString: string): NgbDateStruct {
         const dateObject = {
-            year: dateString ? parseInt(dateString.split('-')[0]) : null,
-            month: dateString ? parseInt(dateString.split('-')[1]) : null,
-            day: dateString ? parseInt(dateString.split('-')[2]) : null,
+            year: dateString ? parseInt(dateString.split("-")[0]) : null,
+            month: dateString ? parseInt(dateString.split("-")[1]) : null,
+            day: dateString ? parseInt(dateString.split("-")[2]) : null,
         };
         return dateObject;
     }
@@ -133,8 +144,11 @@ export class SearchFormComponent implements OnInit {
                 start_date: this.startDateString,
                 end_date: this.endDateString,
             };
-            this.searchService.loadResults(this.api_params);
-            // this.store.dispatch({ type: '[Slots] Get Slots', api_params: this.api_params });
+            this.store.dispatch(
+                fromSlots.getSlots({
+                    payload: this.api_params,
+                }),
+            );
             this.setUrl();
         }
     }
@@ -147,7 +161,7 @@ export class SearchFormComponent implements OnInit {
 
     public setUrl(): void {
         this.router.navigate([
-            '/',
+            "/",
             this.api_params.pitch_id,
             this.api_params.start_date,
             this.api_params.end_date,
